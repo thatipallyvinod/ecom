@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>User Profile</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+	<script type="text/javascript">
+		document.addEventListener("DOMContentLoaded", function () {
+			var isLoggedIn = localStorage.getItem("isLoggedIn");
+
+			console.log("det: ", typeof (isLoggedIn));
+			console.log("isLoggedIn type: ", typeof (isLoggedIn));
+			console.log("isLoggedIn value: ", isLoggedIn);
+
+			if (isLoggedIn === 'true') {
+				// Get details from localStorage and parse it to an object
+				var details = JSON.parse(localStorage.getItem('userDetails')); // Parse JSON string to an object
+				console.log(details.name)
+				if (details !== null) {
+					document.getElementById('id').innerText = details.id;
+					document.getElementById('name').innerText = details.name;
+					document.getElementById('email').innerText = details.email;
+					<!--document.getElementById('username').innerText = details.username;-->
+					document.getElementById('password').innerText = details.password;					
+					document.getElementById('role').innerText = details.role;
+				}
+			}
+		});
+	</script>
+</head>
+
+<body>
+	<div th:replace="navbar.html"></div>
+
+	<div class="container mt-5 text-center" style="padding: 60px;">
+		<h2 class="text-center font-italic mb-1">User Profile:</h2>
+		<br>
+		<table class="table table-bordered table-striped">
+			<thead class="thead-dark text-center">
+				<tr>
+					<th>Id</th>
+					<th>Full Name</th>
+					<th>Email</th>
+					<!--<th>Username</th>-->
+					<th>Password</th>					
+					<th>Role</th>
+				</tr>
+			</thead>
+			<tbody class="text-center">
+				<tr>
+					<td id="id"></td>
+					<td id="name"></td>
+					<td id="email"></td>
+					<!--<td id="username"></td>-->
+					<td id="password"></td>					
+					<td id="role"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="d-flex justify-content-center mt-4">
+		<button id="logoutButton" class="btn btn-danger">Logout</button>
+	</div>
+
+	<script type="text/javascript">
+		document.getElementById('logoutButton').addEventListener('click', function () {
+			// Remove isLoggedIn and userDetails from localStorage
+			localStorage.removeItem('isLoggedIn');
+			localStorage.removeItem('userDetails');			
+			localStorage.removeItem('role');
+
+			// Optionally, redirect to the login page or show a message
+			window.location.href = '/getlogin'; // Change to your login page URL
+		});
+	</script>
+</body>
+
+</html>

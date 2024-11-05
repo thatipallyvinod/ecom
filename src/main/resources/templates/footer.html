@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Footer Example</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			min-height: 100vh;
+		}
+
+		.content {
+			flex: 1;
+		}
+
+		.footer {
+			background-color: #333;
+			color: white;
+			padding: 40px 20px;
+			text-align: justify;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			margin-top: auto;
+		}
+
+		.footer-section {
+			flex: 1;
+			min-width: 200px;
+			margin: 20px;
+		}
+
+		.footer-section h3 {
+			border-bottom: 1px solid #555;
+			padding-bottom: 10px;
+			margin-bottom: 20px;
+		}
+
+		.footer-section p,
+		.footer-section ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		.footer-section ul li {
+			margin: 10px 0;
+		}
+
+		.footer-section a {
+			color: white;
+			text-decoration: none;
+		}
+
+		.footer-section a:hover {
+			text-decoration: underline;
+		}
+
+		.customer-help {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.customer-help-columns {
+			display: flex;
+			justify-content: space-between;
+			text-align: left;
+		}
+
+		.customer-help ul {
+			flex: 1;
+			min-width: 150px;
+			margin-right: 20px;
+		}
+
+		.social-icons {
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			margin-top: 10px;
+		}
+
+		.social-icons a {
+			display: inline-block;
+			margin: 0 10px;
+			width: 30px;
+			height: 30px;
+			line-height: 30px;
+			border-radius: 50%;
+			background-color: #555;
+			text-align: center;
+		}
+
+		.social-icons a i {
+			color: white;
+			font-size: 16px;
+		}
+
+		.footer-bottom {
+			text-align: center;
+			padding: 10px 0;
+			border-top: 1px solid #555;
+			margin-top: 20px;
+			width: 100%;
+		}
+	</style>
+	<!-- Add font-awesome for social media icons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+
+	<div class="content">
+		<!-- Other content of your page -->
+	</div>
+
+	<footer class="footer">
+		<div class="footer-section">
+			<h3>Company Profile</h3>
+			<p> This E-Commerce application is a platform designed to facilitate online buying and selling of products.
+				It provides users with a convenient way to browse through a catalog of items, add them to a shopping
+				cart, and complete the purchase through a secure checkout process. </p>
+		</div>
+		<div class="footer-section">
+			<h3>About Us</h3>
+			<ul>
+				<li><a href="#">Our Story</a></li>
+				<li><a href="/admin-registration" target=" _blank">Admin Registration</a></li>
+				<li><a href="#">Wholesale Program</a></li>
+				<li><a href="#">Press Inquiries</a></li>
+			</ul>
+		</div>
+		<div class="footer-section customer-help">
+			<h3>Customer Help</h3>
+			<div class="customer-help-columns">
+				<ul>
+					<li><a href="/contactus">Contact Us</a></li>
+					<li><a href="#">FAQ</a></li>
+					<li><a href="#">Return Policy</a></li>
+					<li><a href="#">Shipping Information</a></li>
+				</ul>
+				<ul>
+					<li><a href="#">Exchange Policy</a></li>
+					<li><a href="/getlogin">Track Your Order</a></li>
+					<li><a href="#">Earn Rewards</a></li>
+					<li><a href="#">Help Center</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="footer-section">
+			<h3>Follow Us</h3>
+			<div class="social-icons">
+				<a href="https://www.facebook.com/yourprofile" target="_blank"><i class="fab fa-facebook-f"></i></a>
+				<a href="https://www.twitter.com/yourprofile" target="_blank"><i class="fab fa-twitter"></i></a>
+				<a href="https://www.instagram.com/yourprofile" target="_blank"><i class="fab fa-instagram"></i></a>
+				<a href="https://www.linkedin.com/in/yourprofile" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+				<a href="https://www.youtube.com/c/yourchannel" target="_blank"><i class="fab fa-youtube"></i></a>
+			</div>
+		</div>
+		<div class="footer-bottom">
+			&copy; 2024 E-Commerce. All Rights Reserved.
+		</div>
+	</footer>
+
+</body>
+</html>

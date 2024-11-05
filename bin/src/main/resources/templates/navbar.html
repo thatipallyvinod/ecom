@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Navbar</title>
+	<!-- Include Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<!-- Include Font Awesome for icons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<!-- Add your custom CSS if needed -->
+	<style>
+		/* Add custom styles here */
+		.navbar {
+			background-color: #000000;
+			border-radius: 10px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			padding: 10px;
+		}
+
+		.navbar-brand {
+			color: #FFFFFF !important;
+			font-weight: bold;
+			font-size: 1.2rem;
+		}
+
+		.nav-link {
+			color: #FFFFFF !important;
+			font-size: 1rem;
+		}
+
+		.navbar-toggler-icon {
+			background-color: #FFFFFF;
+		}
+
+		.nav-link i {
+			font-size: 1rem;
+		}
+
+		.navbar-nav-center {
+			margin: 0 auto;
+		}
+
+		.header-icon {
+			color: #FFFFFF !important;
+			margin-left: 10px;
+		}
+
+		.profile-icon {
+			width: 25px;
+			height: 25px;
+			border-radius: 50%;
+			background-color: #FFFFFF;
+			color: #000000;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 0.8rem;
+			font-weight: bold;
+			margin-right: 5px;
+			cursor: pointer;
+		}
+
+		.dropdown-menu {
+			margin-top: 4px;
+			/* Adjust the margin to position the dropdown */
+			display: none;
+			position: absolute;
+			background-color: #fff;
+			min-width: 100px;
+			z-index: 1000;
+			box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+			right: 0;
+		}
+
+		.dropdown-menu a {
+			color: #000;
+			padding: 12px 16px;
+			text-decoration: none;
+			display: block;
+		}
+
+		.dropdown-menu a:hover {
+			background-color: #f2f2f2;
+		}
+
+		.dropdown:hover .dropdown-menu {
+			/*display: block;*/
+		}
+
+		.header-right {
+			display: flex;
+			align-items: center;
+		}
+
+		.header-right .header-icon {
+			margin-left: 10px;
+		}
+	</style>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			updateNavbar();
+			document.getElementById('logoutButton').addEventListener('click', function (event) {
+				event.stopPropagation();
+				// Remove isLoggedIn and userDetails from localStorage
+				localStorage.removeItem('isLoggedIn');
+				localStorage.removeItem('userDetails');
+				localStorage.removeItem('role');
+				// Optionally, redirect to the login page or show a message
+				window.location.href = '/getlogin'; // Change to your login page URL
+			});
+		});
+
+		function toggleDropdown() {
+			var dropdownMenu = document.getElementById('dropdownMenu');
+			var displayStyle = window.getComputedStyle(dropdownMenu).getPropertyValue('display');
+			if (displayStyle === 'block') {
+				dropdownMenu.style.display = 'none';
+			} else {
+				dropdownMenu.style.display = 'block';
+			}
+		}
+
+		function updateNavbar() {
+			var currentPage = window.location.pathname;
+			var storedIsLoggedIn = localStorage.getItem('isLoggedIn');
+			var role = localStorage.getItem('role');
+
+			let addProductLinkHTML = '';
+			if (role === 'ADMIN') {
+				if (currentPage.startsWith("/mens")) {
+					addProductLinkHTML = `<li class="nav-item"><a class="nav-link" href="/mens/add-product">Add Product</a></li>`;
+				} else if (currentPage.startsWith("/womens")) {
+					addProductLinkHTML = `<li class="nav-item"><a class="nav-link" href="/womens/add-product">Add Product</a></li>`;
+				} else if (currentPage.startsWith("/kids")) {
+					addProductLinkHTML = `<li class="nav-item"><a class="nav-link" href="/kids/add-product">Add Product</a></li>`;
+				}
+			}
+
+			let user = JSON.parse(localStorage.getItem('userDetails'));
+			let profileLinkHTML = '<a href="/getlogin" class="header-icon"><i class="fas fa-user"></i> Account</a>';
+			if (storedIsLoggedIn === 'true' && user && user.name) {
+				let userName = user.name.split(' ')[0]; // Get the first name
+				let userInitial = userName.charAt(0).toUpperCase();
+				let ordersLink = role === 'ADMIN' ? '/admin/get-orders' : `/orders/all-orders/${user.id}`;
+				profileLinkHTML = `
+                    <div class="dropdown">
+                        <div class="profile-icon" onclick="toggleDropdown()">${userInitial}</div>
+                        <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="/admin/profile1">Profile</a>
+                            <a class="dropdown-item" href="${ordersLink}">Orders</a>
+                            <a class="dropdown-item" id="logoutButton">Logout</a>
+                        </div>
+                    </div>`;
+			}
+
+			let cartLinkHref = '/getlogin';
+			let wishlistLinkHref = '/getlogin'
+			if (user && user.id) {
+				cartLinkHref = '/cart/getcart/' + user.id;
+				wishlistLinkHref = '/wishlist/get-wishlist/' + user.id;
+			}
+
+			const navbarHTML = `
+                <header>
+                    <!-- Navbar -->
+                    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+                        <a class="navbar-brand" href="/">Your E-Commerce Store</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav mr-auto"></ul>
+                            <ul class="navbar-nav navbar-nav-center">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/mens/dresses">Men</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/womens/dresses">Women</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/kids/dresses">Kids</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/aboutus">About Us</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/contactus">Contact Us</a>
+                                </li>
+                                ${addProductLinkHTML}
+                            </ul>
+                            <div class="header-right" style="color: white;" id="profile-link">
+                                ${profileLinkHTML}
+                                <a href="${cartLinkHref}" id="cart-link" class="header-icon"><i
+									class="fas fa-shopping-cart"></i> Cart</a>
+									                                <a href="${wishlistLinkHref}" class="header-icon"><i class="fas fa-heart"></i> Wishlist</a>
+									                            </div>
+									                        </div>
+									                    </nav>
+									                </header>
+									            `;
+
+			document.body.insertAdjacentHTML('afterbegin', navbarHTML);
+		}
+	</script>
+</head>
+
+<body>
+	<!-- Include jQuery and Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

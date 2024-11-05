@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Orders</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f4f4f4;
+			margin: 0;
+			padding: 60px;
+		}
+
+		.container {
+			max-width: 1000px;
+			margin: 20px auto;
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		h1 {
+			text-align: center;
+			margin-bottom: 30px;
+		}
+
+		.cart-item {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 20px;
+			padding: 10px;
+		}
+
+		.cart-image {
+			width: 120px;
+			height: 120px;
+			object-fit: cover;
+			margin-right: 20px;
+		}
+
+		.cart-details {
+			flex-grow: 2;
+			margin-right: 20px;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.cart-details h3,
+		.cart-details p {
+			margin: 0;
+		}
+
+		.cart-status {
+			flex-grow: 1;
+			font-weight: bold;
+			color: deeppink;
+			margin-right: 20px;
+			text-align: right;
+		}
+
+		.cart-price {
+			font-weight: bold;
+			margin-right: 20px;
+			text-align: right;
+		}
+
+		.cart-category {
+			margin-top: 20px;
+			margin-bottom: 10px;
+			padding-bottom: 5px;
+		}
+
+		.remove-button {
+			background-color: #dc3545;
+			color: #fff;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+			border-radius: 3px;
+		}
+
+		.remove-button:hover {
+			background-color: #c82333;
+		}
+
+		.total-price {
+			text-align: right;
+			font-size: 1.2em;
+			font-weight: bold;
+			margin-top: 20px;
+		}
+
+		.status-dropdown {
+			width: 200px;
+			margin-right: 20px;
+		}
+
+		.invisible-image {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- Navbar placeholder -->
+	<div th:replace="navbar.html"></div>
+
+	<!-- Main content -->
+	<div class="container">
+		<h1>Your Orders</h1>
+		<div th:each="order : ${orders}">
+			<div th:if="${order.mensDress != null || order.womensDress != null || order.kidsDress != null}">
+				<!-- Check for each dress type and display details -->
+				<div th:if="${order.mensDress != null}" class="cart-category">
+					<div class="cart-item">
+						<!-- Display dress image -->
+						<img th:src="@{/mens/image/{id}(id=${order.mensDress.id})}" alt="Image" class="cart-image">
+						<div class="cart-details">
+							<!-- Display dress name and description -->
+							<h3 th:text="${order.mensDress.name}">Dress Name</h3>
+							<p th:text="${order.mensDress.description}">Dress Description</p>
+						</div>
+						<!-- Display status dropdown -->
+						<div class="cart-status">
+							<select class="status-dropdown" style="display: none;" th:attr="data-order-id=${order.id}">
+								<option th:each="status : ${T(com.shopping.entity.OrderStatus).values()}"
+									th:value="${status}" th:text="${status}"
+									th:selected="${order.orderStatus == status}"></option>
+							</select>
+							<!-- Display current status -->
+							<span class="order-status-text"
+								th:text="${order.orderStatus != null ? order.orderStatus : 'No Status'}"></span>
+						</div>
+						<!-- Display dress price -->
+						₹<div class="cart-price" th:text="${order.mensDress.price}">Dress Price</div>
+					</div>
+				</div>
+
+				<!-- Check for each dress type and display details -->
+				<div th:if="${order.womensDress != null}" class="cart-category">
+					<div class="cart-item">
+						<!-- Display dress image -->
+						<img th:src="@{/womens/image/{id}(id=${order.womensDress.id})}" alt="Image" class="cart-image">
+						<div class="cart-details">
+							<!-- Display dress name and description -->
+							<h3 th:text="${order.womensDress.name}">Dress Name</h3>
+							<p th:text="${order.womensDress.description}">Dress Description</p>
+						</div>
+						<!-- Display status dropdown -->
+						<div class="cart-status">
+							<select class="status-dropdown" style="display: none;" th:attr="data-order-id=${order.id}">
+								<option th:each="status : ${T(com.shopping.entity.OrderStatus).values()}"
+									th:value="${status}" th:text="${status}"
+									th:selected="${order.orderStatus == status}"></option>
+							</select>
+							<!-- Display current status -->
+							<span class="order-status-text"
+								th:text="${order.orderStatus != null ? order.orderStatus : 'No Status'}"></span>
+						</div>
+						<!-- Display dress price -->
+						₹<div class="cart-price" th:text=" ${order.womensDress.price}">Dress Price</div>
+					</div>
+				</div>
+
+				<!-- Check for each dress type and display details -->
+				<div th:if="${order.kidsDress != null}" class="cart-category">
+					<div class="cart-item">
+						<!-- Display dress image -->
+						<img th:src="@{/kids/image/{id}(id=${order.kidsDress.id})}" alt="Image" class="cart-image">
+						<div class="cart-details">
+							<!-- Display dress name and description -->
+							<h3 th:text="${order.kidsDress.name}">Dress Name</h3>
+							<p th:text="${order.kidsDress.description}">Dress Description</p>
+						</div>
+						<!-- Display status dropdown -->
+						<div class="cart-status">
+							<select class="status-dropdown" style="display: none;" th:attr="data-order-id=${order.id}">
+								<option th:each="status : ${T(com.shopping.entity.OrderStatus).values()}"
+									th:value="${status}" th:text="${status}"
+									th:selected="${order.orderStatus == status}"></option>
+							</select>
+							<!-- Display current status -->
+							<span class="order-status-text"
+								th:text="${order.orderStatus != null ? order.orderStatus : 'No Status'}"></span>
+						</div>
+						<!-- Display dress price -->
+						₹<div class="cart-price" th:text="${order.kidsDress.price}">Dress Price</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Invisible image for making GET requests -->
+	<img id="statusUpdateImage" class="invisible-image" alt="Invisible Image">
+
+	<script>
+		// Function to handle status update
+		function updateStatus(orderId) {
+			const dropdown = document.querySelector(`select[data-order-id='${orderId}']`);
+			const status = dropdown.value;
+			console.log(`Updating status for order ${orderId} to ${status}`);
+			const img = document.getElementById('statusUpdateImage');
+			img.src = `/admin/update-status/${orderId}/${status}`;
+		}
+
+		// Event listener for DOM content loaded
+		document.addEventListener('DOMContentLoaded', function () {
+			const role = localStorage.getItem('role');
+			const isAdmin = role === 'ADMIN';
+
+			// Display or hide status dropdown based on user role
+			document.querySelectorAll('.status-dropdown').forEach(dropdown => {
+				dropdown.style.display = isAdmin ? 'inline-block' : 'none';
+				// Add onchange event listener to each dropdown
+				dropdown.addEventListener('change', function () {
+					const orderId = dropdown.getAttribute('data-order-id');
+					updateStatus(orderId);
+				});
+			});
+
+			// Display or hide order status text based on user role
+			document.querySelectorAll('.order-status-text').forEach(span => {
+				span.style.display = isAdmin ? 'none' : 'inline';
+			});
+		});
+	</script>
+</body>
+
+</html>

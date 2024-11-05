@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>About Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1;
+            padding: 60px 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 150px;
+            resize: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 20px;
+            text-align: justify;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            margin: 20px;
+        }
+
+        .footer-section h3 {
+            border-bottom: 1px solid #555;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section p,
+        .footer-section ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin: 10px 0;
+        }
+
+        .footer-section a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            text-decoration: underline;
+        }
+
+        .customer-help {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .customer-help-columns {
+            display: flex;
+            justify-content: space-between;
+            text-align: left;
+        }
+
+        .customer-help ul {
+            flex: 1;
+            min-width: 150px;
+            margin-right: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 50%;
+            background-color: #555;
+            text-align: center;
+        }
+
+        .social-icons a i {
+            color: white;
+            font-size: 16px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 10px 0;
+            border-top: 1px solid #555;
+            margin-top: 20px;
+            width: 100%;
+        }
+    </style>
+    <!-- Add font-awesome for social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div th:replace="navbar.html"></div>
+    <div class="content">
+        <div class="container">
+            <h1>Contact Us</h1>
+            <!-- Your content goes here -->
+        </div>
+    </div>
+    <div th:replace="footer.html"></div>
+</body>
+
+</html>

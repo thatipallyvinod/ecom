@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Orders</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f4f4f4;
+			margin: 0;
+			padding: 60px;
+		}
+
+		.container {
+			max-width: 800px;
+			margin: 20px auto;
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		h1 {
+			text-align: center;
+			margin-bottom: 30px;
+		}
+
+		.cart-item {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 20px;
+			padding: 10px;
+		}
+
+		.cart-image {
+			width: 120px;
+			height: 120px;
+			object-fit: cover;
+			margin-right: 20px;
+		}
+
+		.cart-details {
+			flex-grow: 1;
+			margin-right: 20px;
+		}
+
+		.cart-details h3 {
+			margin: 0 0 5px 0;
+		}
+
+		.cart-price {
+			font-weight: bold;
+			margin-right: 40px;
+		}
+
+		.cart-status {
+			font-weight: bold;
+			color: deeppink;
+			margin-right: 90px;
+		}
+
+		.remove-button {
+			background-color: #dc3545;
+			color: #fff;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+			border-radius: 3px;
+		}
+
+		.remove-button:hover {
+			background-color: #c82333;
+		}
+
+		.cart-category {
+			margin-top: 20px;
+			margin-bottom: 10px;
+			padding-bottom: 5px;
+		}
+
+		.total-price {
+			text-align: right;
+			font-size: 1.2em;
+			font-weight: bold;
+			margin-top: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<div th:replace="navbar.html"></div>
+	<div class="container">
+		<h1>Your Orders</h1>
+		<div th:each="cart : ${carts}">
+			<!-- Check if the cart is not empty -->
+			<div
+				th:if="${#lists.size(cart.mensDress) + #lists.size(cart.womensDress) + #lists.size(cart.kidsDress) > 0}">
+				<!-- Men's Dresses -->
+				<div th:if="${#lists.size(cart.mensDress) > 0}" class="cart-category" data-category="mens">
+					<div th:each="dress : ${cart.mensDress}" class="cart-item">
+						<img th:src="@{/mens/image/{id}(id=${dress.id})}" alt="Image" class="cart-image">
+						<div class="cart-details">
+							<h3 th:text="${dress.name}">Dress Name</h3>
+							<h3 th:text="${dress.description}">Dress Description</h3>
+						</div>
+						<div class="cart-status">
+							<select>
+								<option th:each="status : ${T(com.shopping.entity.OrderStatus).values()}"
+										th:value="${status}"
+										th:text="${status}"
+										th:selected="${status} == ${cart.orderStatus}"></option>
+							</select>
+						</div>
+						<div class="cart-price" th:text="${dress.price}">Dress Price</div>
+					</div>
+				</div>
+
+				<!-- Women's Dresses -->
+				<div th:if="${#lists.size(cart.womensDress) > 0}" class="cart-category" data-category="womens">
+					<div th:each="dress : ${cart.womensDress}" class="cart-item">
+						<img th:src="@{/womens/image/{id}(id=${dress.id})}" alt="Image" class="cart-image">
+						<div class="cart-details">
+							<h3 th:text="${dress.name}">Dress Name</h3>
+							<h3 th:text="${dress.description}">Dress Description</h3>
+						</div>
+						<div class="cart-status">
+							<select >
+								<option th:each="status : ${T(com.shopping.entity.OrderStatus).values()}"
+										th:value="${status}"
+										th:text="${status}"
+										th:selected="${status} == ${cart.orderStatus}"></option>
+							</select>
+						</div>
+						<div class="cart-price" th:text="${dress.price}">Dress Price</div>
+					</div>
+				</div>
+
+				<!-- Kids' Dresses -->
+				<div th:if="${#lists.size(cart.kidsDress) > 0}" class="cart-category" data-category="kids">
+					<div th:each="dress : ${cart.kidsDress}" class="cart-item">
+						<img th:src="@{/kids/image/{id}(id=${dress.id})}" alt="Image" class="cart-image">
+						<div class="cart-details">
+							<h3 th:text="${dress.name}">Dress Name</h3>
+							<h3 th:text="${dress.description}">Dress Description</h3>
+						</div>
+						<div class="cart-status">
+							<select >
+								<option th:each="status : ${T(com.shopping.entity.OrderStatus).values()}"
+										th:value="${status}"
+										th:text="${status}"
+										th:selected="${status} == ${cart.orderStatus}"></option>
+							</select>
+						</div>
+						<div class="cart-price" th:text="${dress.price}">Dress Price</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

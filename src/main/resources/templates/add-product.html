@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Add Product</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: deepskyblue;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+
+		.form-container {
+			background-color: #ffffff;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			width: 100%;
+			max-width: 400px;
+			max-height: 80vh;
+			overflow-y: auto;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		h1 {
+			text-align: center;
+			color: #333;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 8px;
+			color: #555;
+		}
+
+		input[type="text"],
+		textarea {
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 15px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+		}
+
+		input[type="file"] {
+			margin-bottom: 15px;
+		}
+
+		button {
+			width: 45%;
+			/* Adjust button width */
+			padding: 10px;
+			background-color: #28a745;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			margin-right: 5px;
+			/* Space between buttons */
+		}
+
+		button:last-child {
+			margin-right: 0;
+			/* Remove margin from the last button */
+		}
+
+		button:hover {
+			background-color: #218838;
+		}
+
+		.cancel-button {
+			background-color: #dc3545;
+		}
+
+		.cancel-button:hover {
+			background-color: #c82333;
+		}
+
+		#imagePreview {
+			display: none;
+			width: 240px;
+			height: auto;
+			margin-top: 15px;
+			border-radius: 4px;
+			border: 1px solid #ccc;
+		}
+	</style>
+</head>
+
+<body>
+	<div th:replace="navbar.html"></div>
+	<div class="form-container">
+		<h1>Add Product</h1>
+		<form th:action="@{|${baseUrl}/add-product|}" method="post" enctype="multipart/form-data"
+			th:object="${productForm}">
+			<div>
+				<label for="name">Name:</label>
+				<input type="text" id="name" name="name" th:if="${baseUrl} == '/mens'" th:field="*{product.name}"
+					required>
+				<input type="text" id="name" name="name" th:if="${baseUrl} == '/womens'" th:field="*{womensDress.name}"
+					required>
+				<input type="text" id="name" name="name" th:if="${baseUrl} == '/kids'" th:field="*{kidsDress.name}"
+					required>
+			</div>
+			<div>
+				<label for="category">Category:</label>
+				<input type="text" id="category" name="category" th:if="${baseUrl} == '/mens'"
+					th:field="*{product.category}" required>
+				<input type="text" id="category" name="category" th:if="${baseUrl} == '/womens'"
+					th:field="*{womensDress.category}" required>
+				<input type="text" id="category" name="category" th:if="${baseUrl} == '/kids'"
+					th:field="*{kidsDress.category}" required>
+			</div>
+			<div>
+				<label for="description">Description:</label>
+				<textarea id="description" name="description" th:if="${baseUrl} == '/mens'"
+					th:field="*{product.description}" required></textarea>
+				<textarea id="description" name="description" th:if="${baseUrl} == '/womens'"
+					th:field="*{womensDress.description}" required></textarea>
+				<textarea id="description" name="description" th:if="${baseUrl} == '/kids'"
+					th:field="*{kidsDress.description}" required></textarea>
+			</div>
+
+			<div>
+				<label for="price">Price:</label>
+				<input type="number" id="price" name="price" th:if="${baseUrl} == '/mens'" th:field="*{product.price}"
+					required>
+				<input type="text" id="price" name="price" th:if="${baseUrl} == '/womens'"
+					th:field="*{womensDress.price}" required>
+				<input type="text" id="price" name="price" th:if="${baseUrl} == '/kids'" th:field="*{kidsDress.price}"
+					required>
+			</div>
+			<div>
+				<label for="size">Size:</label>
+				<select id="size" name="size" th:if="${baseUrl} == '/mens'" th:field="*{product.size}" required>
+					<option value="small">S</option>
+					<option value="medium">M</option>
+					<option value="large">L</option>
+					<option value="extra-large">XL</option>
+				</select>
+				<select id="size" name="size" th:if="${baseUrl} == '/womens'" th:field="*{womensDress.size}" required>
+					<option value="small">S</option>
+					<option value="medium">M</option>
+					<option value="large">L</option>
+					<option value="extra-large">XL</option>
+				</select>
+				<select id="size" name="size" th:if="${baseUrl} == '/kids'" th:field="*{kidsDress.size}" required>
+					<option value="small">S</option>
+					<option value="medium">M</option>
+					<option value="large">L</option>
+					<option value="extra-large">XL</option>
+				</select>
+			</div>
+			<div>
+				<label for="color">Color:</label>
+				<input type="text" id="color" name="color" th:if="${baseUrl} == '/mens'" th:field="*{product.color}"
+					required>
+				<input type="text" id="color" name="color" th:if="${baseUrl} == '/womens'"
+					th:field="*{womensDress.color}" required>
+				<input type="text" id="color" name="color" th:if="${baseUrl} == '/kids'" th:field="*{kidsDress.color}"
+					required>
+			</div>
+			<div>
+				<label for="rating">Rating:</label>
+				<input type="text" id="rating" name="rating" th:if="${baseUrl} == '/mens'" th:field="*{product.rating}"
+					required>
+				<input type="text" id="rating" name="rating" th:if="${baseUrl} == '/womens'"
+					th:field="*{womensDress.rating}" required>
+				<input type="text" id="rating" name="rating" th:if="${baseUrl} == '/kids'"
+					th:field="*{kidsDress.rating}" required>
+			</div>
+
+			<div>
+				<label for="image">Image:</label>
+				<input type="file" id="image" name="image" th:field="*{image}" accept="image/*" required
+					onchange="previewImage(event)">
+			</div>
+			<div>
+				<img id="imagePreview" src="" alt="Image Preview" />
+			</div>
+			<div class="button-container">
+				<input type="submit" class="btn btn-primary" value="Submit" />
+				<a href="/" class="btn btn-danger">Cancel</a>
+			</div>
+		</form>
+	</div>
+
+	<script>
+		function previewImage(event) {
+			var input = event.target;
+			var reader = new FileReader();
+			reader.onload = function () {
+				var dataURL = reader.result;
+				var imagePreview = document.getElementById('imagePreview');
+				imagePreview.src = dataURL;
+				imagePreview.style.display = 'block';
+			};
+			reader.readAsDataURL(input.files[0]);
+		}
+	</script>
+</body>
+
+</html>

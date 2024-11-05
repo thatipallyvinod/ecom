@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Cart</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f4f4f4;
+			margin: 0;
+			padding: 60px;
+		}
+
+		.container {
+			max-width: 800px;
+			margin: 20px auto;
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		h1 {
+			text-align: center;
+			margin-bottom: 30px;
+		}
+
+		.cart-item {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 20px;
+			padding: 10px;
+		}
+
+		.cart-image {
+			width: 120px;
+			height: 120px;
+			object-fit: cover;
+			margin-right: 20px;
+		}
+
+		.cart-details {
+			flex-grow: 1;
+			margin-right: 20px;
+		}
+
+		.cart-details h3 {
+			margin: 0 0 5px 0;
+		}
+
+		.cart-price {
+			font-weight: bold;
+			margin-right: 20px;
+		}
+
+		.remove-button {
+			background-color: #dc3545;
+			color: #fff;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+			border-radius: 3px;
+		}
+
+		.remove-button:hover {
+			background-color: #c82333;
+		}
+
+		.cart-category {
+			margin-top: 20px;
+			margin-bottom: 10px;
+			padding-bottom: 5px;
+		}
+
+		.total-price {
+			text-align: right;
+			font-size: 1.2em;
+			font-weight: bold;
+			margin-top: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<div th:replace="navbar.html"></div>
+
+	<!-- Check if the cart is not empty -->
+	<div th:if="${#lists.size(cart.mensDress) + #lists.size(cart.womensDress) + #lists.size(cart.kidsDress) > 0}">
+		<div class="container">
+			<h1>Your Cart</h1>
+			<!-- Men's Dresses -->
+			<div th:if="${cart.mensDress}" class="cart-category" data-category="mens">
+				<div th:each="dress, status : ${cart.mensDress}" class="cart-item">
+					<img th:src="@{/mens/image/{id}(id=${dress.id})}" alt="Image" class="cart-image">
+					<div class="cart-details">
+						<h3 th:text="${dress.name}">Dress Name</h3>
+						<h3 th:text="${dress.description}">Dress Description</h3>
+					</div>
+					<div class="cart-price" th:text="${dress.price}">Dress Price</div>
+					<button class="remove-button" th:data-id="${dress.id}">
+						Remove from Cart
+					</button>
+				</div>
+			</div>
+
+			<!-- Women's Dresses -->
+			<div th:if="${cart.womensDress}" class="cart-category" data-category="womens">
+				<div th:each="dress : ${cart.womensDress}" class="cart-item">
+					<img th:src="@{/womens/image/{id}(id=${dress.id})}" alt="Image" class="cart-image">
+					<div class="cart-details">
+						<h3 th:text="${dress.name}">Dress Name</h3>
+						<h3 th:text="${dress.description}">Dress Description</h3>
+					</div>
+					<div class="cart-price" th:text="${dress.price}">Dress Price</div>
+					<button class="remove-button" th:data-id="${dress.id}">
+						Remove from Cart
+					</button>
+				</div>
+			</div>
+
+			<!-- Kids' Dresses -->
+			<div th:if="${cart.kidsDress}" class="cart-category" data-category="kids">
+				<div th:each="dress : ${cart.kidsDress}" class="cart-item">
+					<img th:src="@{/kids/image/{id}(id=${dress.id})}" alt="Image" class="cart-image">
+					<div class="cart-details">
+						<h3 th:text="${dress.name}">Dress Name</h3>
+						<h3 th:text="${dress.description}">Dress Description</h3>
+					</div>
+					<div class="cart-price" th:text="${dress.price}">Dress Price</div>
+					<button class="remove-button" th:data-id="${dress.id}">
+						Remove from Cart
+					</button>
+				</div>
+			</div>
+
+			<!-- Total Price -->
+			<div class="total-price" id="total-price"></div>
+			<button id="place-order" class="btn btn-primary">Place Order</button>
+		</div>
+	</div>
+
+	<!-- If the cart is empty -->
+	<div th:if="${#lists.size(cart.mensDress) + #lists.size(cart.womensDress) + #lists.size(cart.kidsDress) == 0}">
+		<div class="container">
+			<h1>No products in the cart.</h1>
+		</div>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const removeButtons = document.querySelectorAll('.remove-button');
+			const totalPriceElement = document.getElementById('total-price');
+			const placeOrderButton = document.getElementById('place-order');
+
+			function updateTotalPrice() {
+				const prices = document.querySelectorAll('.cart-price');
+				let total = 0;
+				prices.forEach(priceElement => {
+					const price = parseFloat(priceElement.textContent.replace(/[^\d.-]/g, ''));
+					if (!isNaN(price)) {
+						total += price;
+					}
+				});
+				totalPriceElement.textContent = 'Total Price: ₹' + total.toFixed(2);
+			}
+
+			removeButtons.forEach(button => {
+				button.addEventListener('click', function () {
+					const dressId = this.getAttribute('data-id');
+					const categoryElement = this.closest('.cart-category');
+
+					if (categoryElement) {
+						const category = categoryElement.getAttribute('data-category');
+						const userId = JSON.parse(localStorage.getItem('userDetails')).id;
+						location.href = `/cart/remove-from-cart/${userId}/${dressId}?category=${category}`;
+					} else {
+						console.error("Element with class 'cart-category' not found.");
+					}
+				});
+			});
+
+			placeOrderButton.addEventListener('click', function () {
+				const userId = JSON.parse(localStorage.getItem('userDetails')).id;
+				console.log("User Id: ", userId);
+				location.href = `/orders/place-orders/${userId}`;
+			});
+
+			updateTotalPrice();
+		});
+	</script>
+</body>
+
+</html>

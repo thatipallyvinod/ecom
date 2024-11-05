@@ -1,0 +1,53 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>E-Commerce Store</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<!-- Include Font Awesome for icons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+	<style>
+		/* Add custom styles here */
+		.welcome-img {
+			width: 100%;
+			/* Set the width of the image to 100% */
+			height: auto;
+			/* Automatically adjust the height to maintain aspect ratio */
+			margin-bottom: 20px;
+			/* Add margin at the bottom for spacing */
+		}
+	</style>
+</head>
+
+<body>
+	<header th:replace="navbar.html"></header>
+	<!-- Welcome Section with Images -->
+	<section style="padding: 60px;">
+		<div class="container">
+			<h1>Welcome to E-Commerce Store</h1>
+			<div class="row">
+				<div class="col-md-4">
+					<img src="/images/welcome1.jpg" alt="Welcome Image 1" class="welcome-img">
+				</div>
+				<div class="col-md-4">
+					<img src="/images/welcome2.jpg" alt="Welcome Image 2" class="welcome-img">
+				</div>
+				<div class="col-md-4">
+					<img src="/images/welcome3.jpg" alt="Welcome Image 3" class="welcome-img">
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Include your JavaScript files if needed -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

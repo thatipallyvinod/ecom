@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>Registration Form</title>
+
+	<style>
+		/* Import Google font - Poppins */
+		@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font-family: "Poppins", sans-serif;
+		}
+
+		body {
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 20px;
+			background: rgb(130, 106, 251);
+			background-image: url('images/ecommerce.jpg');
+			/* Replace 'your-image-url.jpg' with the actual URL of your image */
+			background-size: cover;
+			background-attachment: fixed;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		.container {
+			position: relative;
+			max-width: 500px;
+			width: 100%;
+			background: rgba(255, 255, 255, 0.6);
+			padding: 25px;
+			border-radius: 8px;
+			box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+		}
+
+		.container header {
+			font-size: 1.5rem;
+			color: #333;
+			font-weight: 500;
+			text-align: center;
+		}
+
+		.container .form {
+			margin-top: 30px;
+		}
+
+		.form .input-box {
+			width: 100%;
+			margin-top: 20px;
+		}
+
+		.input-box label {
+			color: #333;
+			font-weight: 500;
+		}
+
+		.form :where(.input-box input, .select-box select) {
+			position: relative;
+			height: 50px;
+			width: 100%;
+			outline: none;
+			font-size: 1rem;
+			color: #707070;
+			margin-top: 8px;
+			border: 1px solid #ddd;
+			border-radius: 6px;
+			padding: 0 15px;
+		}
+
+		.input-box input:focus {
+			box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+			border-color: rgb(130, 106, 251);
+		}
+
+		.form .column {
+			display: flex;
+			column-gap: 15px;
+		}
+
+		.form .gender-box {
+			margin-top: 20px;
+		}
+
+		.gender-box h3 {
+			color: #333;
+			font-size: 1rem;
+			font-weight: 500;
+			margin-bottom: 8px;
+		}
+
+		.form :where(.gender-option, .gender) {
+			display: flex;
+			align-items: center;
+			column-gap: 20px;
+			flex-wrap: wrap;
+		}
+
+		.form .gender {
+			column-gap: 5px;
+		}
+
+		.gender input {
+			accent-color: rgb(130, 106, 251);
+		}
+
+		.form :where(.gender input, .gender label) {
+			cursor: pointer;
+		}
+
+		.gender label {
+			color: #707070;
+		}
+
+		.form button {
+			height: 55px;
+			width: 100%;
+			color: #fff;
+			font-size: 1rem;
+			font-weight: 500;
+			margin-top: 30px;
+			border: none;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			background: rgb(130, 106, 251);
+		}
+
+		.form button:hover {
+			background: rgb(88, 56, 250);
+		}
+
+		/*Responsive*/
+		@media screen and (max-width: 500px) {
+			.form .column {
+				flex-wrap: wrap;
+			}
+
+			.form :where(.gender-option, .gender) {
+				row-gap: 15px;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<section class="container">
+		<header>Registration Form</header>
+		<form id="registrationForm" th:action="@{/register-admin}" th:object="${admin}" method="post" class="form"
+			onsubmit="return validateForm()">
+			<div class="input-box">
+				<label>Full Name</label>
+				<input type="text" id="fullName" name="fullName" th:field="*{name}" placeholder="Enter full name"
+					required />
+			</div>
+
+			<div class="input-box">
+				<label>Email Address</label>
+				<input type="email" id="email" name="email" th:field="*{email}" placeholder="Enter email address"
+					pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required />
+			</div>
+
+			<div class="column">
+				<div class="input-box">
+					<label>Phone Number</label>
+					<input type="tel" id="mobile" name="mobile" th:field="*{mobile}" placeholder="Enter phone number"
+						pattern="[6789][0-9]{9}" required />
+				</div>
+				<div class="input-box">
+					<label>Birth Date</label>
+					<input type="date" id="birthDate" name="birthDate" th:field="*{date}" required />
+				</div>
+			</div>
+			<div class="gender-box">
+				<h3>Gender</h3>
+				<div class="gender-option">
+					<div class="gender">
+						<input type="radio" id="male" name="gender" th:field="*{gender}" value="Male" required />
+						<label for="male">Male</label>
+					</div>
+					<div class="gender">
+						<input type="radio" id="female" name="gender" th:field="*{gender}" value="Female" required />
+						<label for="female">Female</label>
+					</div>
+					<div class="gender">
+						<input type="radio" id="preferNotToSay" name="gender" th:field="*{gender}"
+							value="Prefer not to say" required />
+						<label for="preferNotToSay">Prefer not to say</label>
+					</div>
+				</div>
+			</div>
+			<div class="input-box">
+				<h3>Amount to Pay</h3>
+				<input type="text" id="amount" name="amount" th:field="*{amount}" placeholder="1000" readonly />
+
+			</div>
+			<button type="submit">Submit</button>
+		</form>
+	</section>
+
+	<script>
+		function validateForm() {
+			var fullName = document.getElementById("fullName").value;
+			var email = document.getElementById("email").value;
+			var mobile = document.getElementById("mobile").value;
+
+			// Validate full name (required)
+			if (fullName === "") {
+				alert("Full Name must be filled out");
+				return false;
+			}
+
+			// Validate email (required and format)
+			if (email === "") {
+				alert("Email Address must be filled out");
+				return false;
+			} else {
+				var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+				if (!emailRegex.test(email)) {
+					alert("Invalid Email Address format");
+					return false;
+				}
+			}
+
+			// Validate mobile number (required, starts with 6,7,8,9, exactly 10 digits)
+			if (mobile === "") {
+				alert("Phone Number must be filled out");
+				return false;
+			} else {
+				var mobileRegex = /^[6789][0-9]{9}$/;
+				if (!mobileRegex.test(mobile)) {
+					alert("Invalid Phone Number format");
+					return false;
+				}
+			}
+
+			// If all validations pass, form submits
+			return true;
+		}
+	</script>
+</body>
+
+</html>

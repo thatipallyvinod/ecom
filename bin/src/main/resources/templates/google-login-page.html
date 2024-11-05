@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Google Login</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com">
+    <script>
+        function getContinueUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('continue') || '/profile';  // Default to /profile if continue is not present
+        }
+
+        function onSignIn(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+            
+            fetch('/google-signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: id_token })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = getContinueUrl();  // Redirect to continue URL or profile
+                } else {
+                    console.error('Login failed');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <div id="google-login-button" class="ml-2">
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    </div>
+</body>
+</html>

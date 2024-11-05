@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Wishlist</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f4f4f4;
+			margin: 0;
+			padding: 60px;
+		}
+
+		.container {
+			max-width: 800px;
+			margin: 20px auto;
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		h1 {
+			text-align: center;
+			margin-bottom: 30px;
+		}
+
+		.cart-item {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 20px;
+			padding: 10px;
+		}
+
+		.cart-image {
+			width: 120px;
+			height: 120px;
+			object-fit: cover;
+			margin-right: 20px;
+		}
+
+		.cart-details {
+			flex-grow: 1;
+			margin-right: 20px;
+		}
+
+		.cart-details h3 {
+			margin: 0 0 5px 0;
+		}
+
+		.cart-price {
+			font-weight: bold;
+			margin-right: 20px;
+		}
+
+		.remove-button {
+			background-color: #dc3545;
+			color: #fff;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+			border-radius: 3px;
+		}
+
+		.remove-button:hover {
+			background-color: #c82333;
+		}
+
+		.cart-category {
+			margin-top: 20px;
+			margin-bottom: 10px;
+			padding-bottom: 5px;
+		}
+
+		.total-price {
+			text-align: right;
+			font-size: 1.2em;
+			font-weight: bold;
+			margin-top: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<div th:replace="navbar.html"></div>
+
+	<!-- Check if the cart is not empty -->
+	<div th:if="${#lists.size(wishlist.mensDress) + #lists.size(wishlist.womensDress) + #lists.size(wishlist.kidsDress) > 0}">
+		<div class="container">
+			<h1>Your Wishlist</h1>
+			<!-- Men's Dresses -->
+			<div th:if="${wishlist.mensDress}" class="cart-category" data-category="mens">
+				<div th:each="dress, status : ${wishlist.mensDress}" class="cart-item">
+					<img th:src="@{/mens/image/{id}(id=${dress.id})}" alt="Image" class="cart-image">
+					<div class="cart-details">
+						<h3 th:text="${dress.name}">Dress Name</h3>
+						<h3 th:text="${dress.description}">Dress Description</h3>
+					</div>
+					<div class="cart-price" th:text="${dress.price}">Dress Price</div>
+					<button class="remove-button" th:data-id="${dress.id}">
+						Remove from Wishlist
+					</button>
+				</div>
+			</div>
+
+			<!-- Women's Dresses -->
+			<div th:if="${wishlist.womensDress}" class="cart-category" data-category="womens">
+				<div th:each="dress : ${wishlist.womensDress}" class="cart-item">
+					<img th:src="@{/womens/image/{id}(id=${dress.id})}" alt="Image" class="cart-image">
+					<div class="cart-details">
+						<h3 th:text="${dress.name}">Dress Name</h3>
+						<h3 th:text="${dress.description}">Dress Description</h3>
+					</div>
+					<div class="cart-price" th:text="${dress.price}">Dress Price</div>
+					<button class="remove-button" th:data-id="${dress.id}">
+						Remove from Wishlist
+					</button>
+				</div>
+			</div>
+
+			<!-- Kids' Dresses -->
+			<div th:if="${wishlist.kidsDress}" class="cart-category" data-category="kids">
+				<div th:each="dress : ${wishlist.kidsDress}" class="cart-item">
+					<img th:src="@{/kids/image/{id}(id=${dress.id})}" alt="Image" class="cart-image">
+					<div class="cart-details">
+						<h3 th:text="${dress.name}">Dress Name</h3>
+						<h3 th:text="${dress.description}">Dress Description</h3>
+					</div>
+					<div class="cart-price" th:text="${dress.price}">Dress Price</div>
+					<button class="remove-button" th:data-id="${dress.id}">
+						Remove from Wishlist
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- If the cart is empty -->
+	<div th:if="${#lists.size(wishlist.mensDress) + #lists.size(wishlist.womensDress) + #lists.size(wishlist.kidsDress) == 0}">
+		<div class="container">
+			<h1>No products in your wishlist.</h1>
+		</div>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const removeButtons = document.querySelectorAll('.remove-button');
+
+			removeButtons.forEach(button => {
+				button.addEventListener('click', function () {
+					const dressId = this.getAttribute('data-id');
+					const categoryElement = this.closest('.cart-category');
+
+					if (categoryElement) {
+						const category = categoryElement.getAttribute('data-category');
+						const userId = JSON.parse(localStorage.getItem('userDetails')).id;
+						location.href = `/wishlist/remove-from-wishlist/${userId}/${dressId}?category=${category}`;
+					} else {
+						console.error("Element with class 'cart-category' not found.");
+					}
+				});
+			});
+
+			placeOrderButton.addEventListener('click', function () {
+				const userId = JSON.parse(localStorage.getItem('userDetails')).id;
+				location.href = `/orders/place-orders/${userId}`;
+			});
+
+			updateTotalPrice();
+		});
+	</script>
+</body>
+
+</html>
